@@ -11,6 +11,13 @@ You can utilize our first party Ghost Scripts from within ghostAPT or you can ma
 You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts due to the signature engine, you should NOT include parenthesis '(' or ')' in the script name tag inside your script and the filename or ghostAPT will grab incorrect metadata.
 
 
+Compatibility
+=====================================================================
+Currently, this will only work on an Ubuntu-based distro running KDE.
+
+This decision was made because it was designed for it. I don't like many of the other DE's out there BUT, I do understand there are others out there who like something else. A goal down the line is to make it so you only need Konsole and an Ubuntu-based distro to be able to run ghostAPT. This will take time, effort, and a lot of testing and I am the only developer to-date so if it isn't too much of a burden I will hopefully get around to it.
+
+
 Installation
 =====================================================================
 Download the .zip file on GitHub.

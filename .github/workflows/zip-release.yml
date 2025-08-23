@@ -2,13 +2,13 @@ name: Create ZIP for Release
 
 on:
   release:
-    types: [published]  # Run when you publish a new release
+    types: [published]
 
 jobs:
   zip_files:
     runs-on: ubuntu-latest
     permissions:
-      contents: write    # 🔑 This fixes the "Resource not accessible" error
+      contents: write   # This is REQUIRED
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

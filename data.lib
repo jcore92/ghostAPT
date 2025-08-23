@@ -336,7 +336,7 @@ Starting Installation...
 
     mkdir "$localinstalldirectory/Get Ghost Scripts" &>/dev/null
 
-    curl -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
+    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
 
     # Clean temp folder
     echo "

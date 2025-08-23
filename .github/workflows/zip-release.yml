@@ -5,10 +5,10 @@ on:
     types: [published]
 
 jobs:
-  zip_files:
+  zip_and_release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # This is REQUIRED
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -17,12 +17,9 @@ jobs:
         run: |
           zip ghostAPT.zip ghostAPT.sh data.lib interface.lib
 
-      - name: Upload ZIP
-        uses: actions/upload-release-asset@v1
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./ghostAPT.zip
-          asset_name: ghostAPT.zip
-          asset_content_type: application/zip
+          files: ghostAPT.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   

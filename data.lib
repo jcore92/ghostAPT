@@ -276,7 +276,7 @@ $libraryname not found in current directory...
     echo "$libraryname not found in $localtempdirectory, downloading...
     "
     sleep 1
-    curl -o $localinstalldirectory/$libraryname $remotelibrarylink
+    curl -L -o $localinstalldirectory/$libraryname $remotelibrarylink
 
     fi
     fi
@@ -296,19 +296,19 @@ Starting Installation...
 
     libraryname="ghostAPT.sh"
 
-    remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/ghostAPT.sh"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
     libraryhandlerinstaller
 
     libraryname="interface.lib"
 
-    remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/interface.lib"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
 
     libraryhandlerinstaller
 
     libraryname="data.lib"
 
-    remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/data.lib"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
 
     libraryhandlerinstaller
 
@@ -316,7 +316,7 @@ Starting Installation...
 
     libraryname="ghost.png"
 
-    remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/ghost.png"
+    remotelibrarylink="https://raw.githubusercontent.com/jcore92/ghostAPT/c7f986707449cc77f2ac6384aa30aaa3b5c96c07/ghost.png"
 
     libraryhandlerinstaller
 
@@ -336,7 +336,7 @@ Starting Installation...
 
     mkdir "$localinstalldirectory/Get Ghost Scripts" &>/dev/null
 
-    curl -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://assets.jcorestudios.com/ghostAPT/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
+    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/$ghbranch/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
 
     # Clean temp folder
     echo "
@@ -528,8 +528,8 @@ signatureupdate () {
     # Define directories and files
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
-    local REMOTE_FILE="https://assets.jcorestudios.com/ghostAPT/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://assets.jcorestudios.com/ghostAPT/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
     local TMP_FILE="$localtempdirectory/sig_update_timestamp.tmp"
 
@@ -611,8 +611,8 @@ signatureupdate-force () {
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
 
-    local REMOTE_FILE="https://assets.jcorestudios.com/ghostAPT/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://assets.jcorestudios.com/ghostAPT/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
 
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
 
@@ -664,8 +664,8 @@ signaturerepair () {
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
 
-    local REMOTE_FILE="https://assets.jcorestudios.com/ghostAPT/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://assets.jcorestudios.com/ghostAPT/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
 
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
 
@@ -715,11 +715,11 @@ echo "
 Checking if $programname needs updates...
 "
 
-remote_file_loc="https://assets.jcorestudios.com/ghostAPT/ghostAPT.sh"
+remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
-remote_beta_status=$(curl -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
+remote_beta_status=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
 
-remote_version=$(curl -s $remote_file_loc | grep -oP '(?<=version=")[^"]*')
+remote_version=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*')
 local_version="$version"
 
 if [[ $remote_version =~ ([0-9]+\.[0-9]+) ]]; then
@@ -819,9 +819,9 @@ ghost_updater() {
 
   # Define the array of remote files
   remote_files=(
-    "https://assets.jcorestudios.com/ghostAPT/ghostAPT.sh"
-    "https://assets.jcorestudios.com/ghostAPT/data.lib"
-    "https://assets.jcorestudios.com/ghostAPT/interface.lib"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
     # Add more files as needed
   )
 
@@ -833,7 +833,7 @@ ghost_updater() {
     rm -rf "$localtempdirectory/$log_file" &>/dev/null
     echo "Downloading remote files..." >> "$log_file"
     for file in "${remote_files[@]}"; do
-      if curl -s "$file" > "$localinstalldirectory/$(basename "$file")"; then
+      if curl -L -s "$file" > "$localinstalldirectory/$(basename "$file")"; then
         echo "Remote file $file downloaded successfully." >> "$log_file"
       else
         echo "Error downloading remote file $file." >> "$log_file"
@@ -993,6 +993,8 @@ display_ghost_files() {
     clear && printf '\e[3J'
     header
     installationstatus
+    echo "Category: $selected
+" | center
 
     # Show cursor menu
     local selection

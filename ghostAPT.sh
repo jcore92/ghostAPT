@@ -13,6 +13,7 @@ variables (){
     terminalname=""
     version="2.0 BETA"
     builddate="built on 8/16/2025"
+    ghbranch="main"
 
     # Terminal rules
     terminalwidth="75"
@@ -62,7 +63,7 @@ source $localinstalldirectory/$libraryname
 else
 echo "$libraryname not found in $localinstalldirectory, downloading...
 "
-curl -o $localtempdirectory/$libraryname $remotelibrarylink
+curl -L -o $localtempdirectory/$libraryname $remotelibrarylink
 
 echo "
 Loading $libraryname...
@@ -82,13 +83,13 @@ loadlibraries (){
 
     libraryname="interface.lib"
 
-    #remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/interface.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
 
     libraryhandler
 
     libraryname="data.lib"
 
-    #remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/data.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
 
     libraryhandler
 
@@ -252,7 +253,12 @@ exit
 fi
 
 if [ "$1" == run ]; then
-signatureupdate ; runghost
+ghbranch="main" ; signatureupdate ; runghost
+exit
+fi
+
+if [ "$1" == testing ]; then
+ghbranch="testing" ; signatureupdate ; runghost
 exit
 fi
 

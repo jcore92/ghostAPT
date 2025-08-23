@@ -316,7 +316,7 @@ Starting Installation...
 
     libraryname="ghost.png"
 
-    remotelibrarylink="https://github.com/jcore92/ghostAPT/blob/c7f986707449cc77f2ac6384aa30aaa3b5c96c07/ghost.png"
+    remotelibrarylink="https://raw.githubusercontent.com/jcore92/ghostAPT/c7f986707449cc77f2ac6384aa30aaa3b5c96c07/ghost.png"
 
     libraryhandlerinstaller
 

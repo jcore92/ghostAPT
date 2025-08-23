@@ -276,7 +276,7 @@ $libraryname not found in current directory...
     echo "$libraryname not found in $localtempdirectory, downloading...
     "
     sleep 1
-    curl -o $localinstalldirectory/$libraryname $remotelibrarylink
+    curl -L -o $localinstalldirectory/$libraryname $remotelibrarylink
 
     fi
     fi

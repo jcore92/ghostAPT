@@ -18,6 +18,9 @@ Currently, this will only work on an Ubuntu-based distro running KDE.
 
 This decision was made because it was designed for it. I don't like many of the other DE's out there BUT, I do understand there are others out there who like something else. A goal down the line is to make it so you only need Konsole and an Ubuntu-based distro to be able to run ghostAPT. This will take time, effort, and a lot of testing and I am the only developer to-date so if it isn't too much of a burden I will hopefully get around to it.
 
+You will need to install:
+Curl, Konsole, KDE, Ubuntu-based Distro
+
 
 Installation
 =====================================================================
@@ -27,6 +30,6 @@ Extract the .zip file.
 
 Make sure that ghostAPT.sh is executable.
 
-Double click on ghostAPT.sh
+Double click on ghostAPT.sh and execute it (it will open in Konsole).
 
 Follow the Installation Manager and enjoy!

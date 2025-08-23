@@ -82,13 +82,13 @@ loadlibraries (){
 
     libraryname="interface.lib"
 
-    #remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/interface.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/interface.lib"
 
     libraryhandler
 
     libraryname="data.lib"
 
-    #remotelibrarylink="https://assets.jcorestudios.com/ghostAPT/data.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/data.lib"
 
     libraryhandler
 

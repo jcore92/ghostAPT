@@ -993,6 +993,8 @@ display_ghost_files() {
     clear && printf '\e[3J'
     header
     installationstatus
+    echo "Category: $selected
+" | center
 
     # Show cursor menu
     local selection

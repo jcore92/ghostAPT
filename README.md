@@ -1,4 +1,5 @@
 ghostAPT is a Script Running Engine.
+=====================================================================
 
 The project started because I wanted a way to quickly restore fresh linux installs to a usable state with minimal to no configuration yet be transparent enough to know what was going on in my computer.
 

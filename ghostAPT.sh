@@ -11,7 +11,7 @@ variables (){
     programname="ghostAPT"
     installername="Installation Manager"
     terminalname=""
-    version="2.0 BETA"
+    version="2.1 BETA"
     builddate="built on 8/16/2025"
 
     # Terminal rules

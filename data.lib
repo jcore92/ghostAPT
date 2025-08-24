@@ -717,9 +717,9 @@ Checking if $programname needs updates...
 
 remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT.sh"
 
-remote_beta_status=$(curl -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
+remote_beta_status=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
 
-remote_version=$(curl -s $remote_file_loc | grep -oP '(?<=version=")[^"]*')
+remote_version=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*')
 local_version="$version"
 
 if [[ $remote_version =~ ([0-9]+\.[0-9]+) ]]; then
@@ -833,7 +833,7 @@ ghost_updater() {
     rm -rf "$localtempdirectory/$log_file" &>/dev/null
     echo "Downloading remote files..." >> "$log_file"
     for file in "${remote_files[@]}"; do
-      if curl -s "$file" > "$localinstalldirectory/$(basename "$file")"; then
+      if curl -L -s "$file" > "$localinstalldirectory/$(basename "$file")"; then
         echo "Remote file $file downloaded successfully." >> "$log_file"
       else
         echo "Error downloading remote file $file." >> "$log_file"

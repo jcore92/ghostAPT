@@ -62,7 +62,7 @@ source $localinstalldirectory/$libraryname
 else
 echo "$libraryname not found in $localinstalldirectory, downloading...
 "
-curl -o $localtempdirectory/$libraryname $remotelibrarylink
+curl -L -o $localtempdirectory/$libraryname $remotelibrarylink
 
 echo "
 Loading $libraryname...

@@ -11,8 +11,9 @@ variables (){
     programname="ghostAPT"
     installername="Installation Manager"
     terminalname=""
-    version="2.0 BETA"
+    version="2.1 BETA"
     builddate="built on 8/16/2025"
+    ghbranch="main"
 
     # Terminal rules
     terminalwidth="75"
@@ -82,13 +83,13 @@ loadlibraries (){
 
     libraryname="interface.lib"
 
-    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/interface.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
 
     libraryhandler
 
     libraryname="data.lib"
 
-    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/data.lib"
+    #remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
 
     libraryhandler
 
@@ -252,7 +253,12 @@ exit
 fi
 
 if [ "$1" == run ]; then
-signatureupdate ; runghost
+ghbranch="main" ; signatureupdate ; runghost
+exit
+fi
+
+if [ "$1" == testing ]; then
+ghbranch="testing" ; signatureupdate ; runghost
 exit
 fi
 

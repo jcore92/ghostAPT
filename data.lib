@@ -296,19 +296,19 @@ Starting Installation...
 
     libraryname="ghostAPT.sh"
 
-    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT.sh"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
     libraryhandlerinstaller
 
     libraryname="interface.lib"
 
-    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/interface.lib"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
 
     libraryhandlerinstaller
 
     libraryname="data.lib"
 
-    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/data.lib"
+    remotelibrarylink="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
 
     libraryhandlerinstaller
 
@@ -336,7 +336,7 @@ Starting Installation...
 
     mkdir "$localinstalldirectory/Get Ghost Scripts" &>/dev/null
 
-    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
+    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/$ghbranch/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
 
     # Clean temp folder
     echo "
@@ -528,8 +528,8 @@ signatureupdate () {
     # Define directories and files
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
-    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
     local TMP_FILE="$localtempdirectory/sig_update_timestamp.tmp"
 
@@ -611,8 +611,8 @@ signatureupdate-force () {
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
 
-    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
 
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
 
@@ -664,8 +664,8 @@ signaturerepair () {
     local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
     local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
 
-    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/key.sha256"
+    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
+    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
 
     local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
 
@@ -715,7 +715,7 @@ echo "
 Checking if $programname needs updates...
 "
 
-remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT.sh"
+remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
 remote_beta_status=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
 
@@ -819,9 +819,9 @@ ghost_updater() {
 
   # Define the array of remote files
   remote_files=(
-    "https://github.com/jcore92/ghostAPT/raw/refs/heads/main/ghostAPT.sh"
-    "https://github.com/jcore92/ghostAPT/raw/refs/heads/main/data.lib"
-    "https://github.com/jcore92/ghostAPT/raw/refs/heads/main/interface.lib"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/data.lib"
+    "https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/interface.lib"
     # Add more files as needed
   )
 

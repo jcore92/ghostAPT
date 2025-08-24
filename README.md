@@ -1,7 +1,7 @@
 ghostAPT is a Script Running Engine.
 =====================================================================
 
-The project started because I wanted a way to quickly restore fresh linux installs to a usable state with minimal to no configuration yet be transparent enough to know what was going on in my computer.
+The project started because I wanted a way to quickly restore fresh Linux installs to a usable state with minimal to no configuration yet be transparent enough to know what was going on in my computer.
 
 ghostAPT utilizes signatures and trust in order to open it's Ghost Scripts, so if there is a script that is unknown, it's not trusted until you intervene and it will let you know before proceeding. It also uses the cat command to display the Ghost Script completely before running the script and the Ghost Script must be properly formatted with our code occupying the first 4 lines of a script or else it is considered insecure and will not run. You have peace of mind configuring your system quickly so you can get back to computing on Linux!
 

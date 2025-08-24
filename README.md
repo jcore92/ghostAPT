@@ -11,6 +11,11 @@ You can utilize our first party Ghost Scripts from within ghostAPT or you can ma
 
 You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts due to the signature engine, you should NOT include parenthesis '(' or ')' in the script name tag inside your script and the filename or ghostAPT will grab incorrect metadata.
 
+The Ghost Team Script Collection
+=====================================================================
+This is the standard repository that comes shipped with ghostAPT. You are free to fork this repo and modify if to your taste. It should server as an amazing starting point for setting up your own repositories.
+
+https://github.com/jcore92/The-Ghost-Team-Script-Collection
 
 Compatibility
 =====================================================================

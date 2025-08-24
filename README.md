@@ -3,13 +3,11 @@ ghostAPT is a Script Running Engine.
 
 The project started because I wanted a way to quickly restore fresh Linux installs to a usable state with minimal to no configuration yet be transparent enough to know what was going on in my computer.
 
-ghostAPT utilizes signatures and trust in order to open it's Ghost Scripts, so if there is a script that is unknown, it's not trusted until you intervene and it will let you know before proceeding. It also uses the cat command to display the Ghost Script completely before running the script and the Ghost Script must be properly formatted with our code occupying the first 4 lines of a script or else it is considered insecure and will not run. You have peace of mind configuring your system quickly so you can get back to computing on Linux!
+ghostAPT utilizes SHA-256 signatures and has a trust system implemented in order to open it's Ghost Scripts, so if there is a script that is unknown, it's not trusted until you intervene and it will let you know before proceeding. It also uses the cat command to display the Ghost Script completely before running the script and the Ghost Script must be properly formatted with our code occupying the first 4 lines of a Ghost Script or else it is considered insecure and will not run do to security. You can have peace of mind configuring your system quickly allowing you to get back to computing on Linux!
 
-Ghost Scripts come in many forms but the file must end in a '.ghost' extension in order for ghostAPT to detect them while in its directory in the install folder.
+Ghost Scripts come in many forms but the file must end in a '.ghost' extension and be placed inside a Category (folder) in order for ghostAPT to detect the Ghost Script inside the ghostAPT install directory. You can utilize our first party Ghost Scripts from within ghostAPT or you can manually download/add third party Ghost Scripts so long as they follow the prerequisites above and they are placed in the installation directory correctly: /home/YOU/ghostAPT/CATEGORY/script.ghost
 
-You can utilize our first party Ghost Scripts from within ghostAPT or you can manually download/add third party Ghost Scripts so long as they follow the prerequisites above and that they are placed in the installation directory correctly: /home/YOU/ghostAPT/CATEGORY/script.ghost
-
-You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts due to the signature engine, you should NOT include parenthesis '(' or ')' in the script name tag inside your script and the filename or ghostAPT will grab incorrect metadata.
+You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts, due to the signature engine, you should NOT include parenthesis '(' or ')' in the script name inside your script or the filename of your script or else ghostAPT will grab incorrect metadata when you run your scripts.
 
 The Ghost Team Script Collection
 =====================================================================

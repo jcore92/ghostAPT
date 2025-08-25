@@ -256,7 +256,7 @@ ghbranch="main" ; signatureupdate ; runghost
 exit
 fi
 
-if [ "$1" == run ]; then
+if [ "$1" == testing ]; then
 ghbranch="testing" ; signatureupdate ; runghost
 exit
 fi

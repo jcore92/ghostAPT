@@ -13,6 +13,7 @@ variables (){
     terminalname=""
     version="2.1 BETA"
     builddate="built on 8/16/2025"
+    ghbranch="main"
 
     # Terminal rules
     terminalwidth="75"

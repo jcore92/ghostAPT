@@ -10,9 +10,8 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    terminalname=""
-    version="2.0 BETA"
-    builddate="built on 8/16/2025"
+    version="2.1 BETA"
+    builddate="built on 8/25/2025"
     ghbranch="main"
 
     # Terminal rules

@@ -244,7 +244,7 @@ Exec=konsole -e \"/usr/local/bin/ghostAPT run\"
 
 [Desktop Action manage-installion]
 Name=Manage ghostAPT Installation
-Exec=konsole -e \"/usr/local/bin/ghostAPT install\"" | tee $HOME/Desktop/"$programname $terminalname" ; chmod u+x $HOME/Desktop/"$programname $terminalname" ; sudo cp -fv $HOME/Desktop/"$programname $terminalname" /usr/share/applications/"$programname $terminalname.desktop"
+Exec=konsole -e \"/usr/local/bin/ghostAPT install\"" | tee $HOME/Desktop/"$programname" ; chmod u+x $HOME/Desktop/"$programname" ; sudo cp -fv $HOME/Desktop/"$programname" /usr/share/applications/"$programname.desktop"
 
 }
 
@@ -360,7 +360,7 @@ Installation is complete. $programname will exit, please restart $programname wi
 
 uninstaller (){
 
-    sudo rm -rfv "/usr/local/bin/ghostAPT" "$localinstalldirectory" "$localtempdirectory" "$HOME/Desktop/$programname $terminalname" "/usr/share/applications/$programname $terminalname.desktop" "/usr/share/icons/ghostAPT"
+    sudo rm -rfv "/usr/local/bin/ghostAPT" "$localinstalldirectory" "$localtempdirectory" "$HOME/Desktop/$programname" "/usr/share/applications/$programname.desktop" "/usr/share/icons/ghostAPT"
 
     echo "
     Uninstall has complete.
@@ -1236,7 +1236,7 @@ runghost (){
     #update_flag
     #updates-menuitem
 
-    #categories=("$USER's Script Library" "Copy System Info To Clipboard" "$updatesmenuitem" "Signature Management" "Exit $programname $terminalname")
+    #categories=("$USER's Script Library" "Copy System Info To Clipboard" "$updatesmenuitem" "Signature Management" "Exit $programname")
 
     while [ "$hierarchy" == "1" ]; do
 
@@ -1246,7 +1246,7 @@ runghost (){
     if [ "$hierarchy" == "1" ]; then clear && printf '\e[3J' ; header ; installationstatus ; update_flag ; updates-menuitem
 
         # Usage:
-        choices=("View Ghost Scripts" "View System Info" "$updatesmenuitem" "Signature Management" "About $programname" "Exit $programname $terminalname")
+        choices=("View Ghost Scripts" "View System Info" "$updatesmenuitem" "Signature Management" "About $programname" "Exit $programname")
         basic_cursor_menu "Please make a selection below:" selected "${choices[@]}"
         #echo "
 #Selected: $selected
@@ -1344,7 +1344,7 @@ runghost (){
 
     fi
 
-    if [ "$selected" == "Exit $programname $terminalname" ]; then
+    if [ "$selected" == "Exit $programname" ]; then
 
     clear
     hierarchy="0"

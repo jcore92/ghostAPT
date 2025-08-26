@@ -1105,6 +1105,8 @@ code-goes-below (){
 localtempdirectory="/tmp/ghostAPT"
 localinstalldirectory="$HOME/ghostAPT"
 
+ghbranch="main"
+
 # Scrape scripts for infos
 SCRIPT_NAME=$(basename "$0")
 DIR="$(dirname "$(realpath "$0")")"

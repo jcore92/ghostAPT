@@ -10,7 +10,7 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    version="2.1 BETA"
+    version="2.2 BETA"
     builddate="built on 8/25/2025"
     ghbranch="main"
 
@@ -247,17 +247,19 @@ exit
 fi
 
 if [ "$1" == init ]; then
-signatureupdate ; checkforupdates
+signatureupdate-force ; checkforupdates-force
 exit
 fi
 
 if [ "$1" == run ]; then
-ghbranch="main" ; signatureupdate ; runghost
+#signatureupdate-force ; pullforupdates
+ghbranch="main" ; autoupdatechecker ; runghost
 exit
 fi
 
 if [ "$1" == testing ]; then
-ghbranch="testing" ; signatureupdate ; runghost
+#signatureupdate-force ; pullforupdates
+ghbranch="testing" ; autoupdatechecker ; runghost
 exit
 fi
 

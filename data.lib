@@ -524,31 +524,14 @@ This script is SIGNED and is trusted by its signature."
 }
 
 
-signatureupdate () {
-    # Define directories and files
-    local SIGNATURE_INSPECTION_POINT="$localtempdirectory/ghostAPT_signatures.sha256"
-    local KEY_SHA256_LOC="$localtempdirectory/key.sha256"
-    local REMOTE_FILE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT_signatures.sha256"
-    local REMOTE_SIGNATURE="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/key.sha256"
-    local SIGNATUREUPDATEPATH="$localinstalldirectory/ghostAPT_signatures.sha256"
-    local TMP_FILE="$localtempdirectory/sig_update_timestamp.tmp"
+autoupdatechecker () {
+
+    local TMP_FILE="$localtempdirectory/update_timestamp.tmp"
 
     # Create the temporary directory if it doesn't exist
     mkdir -p "$localtempdirectory" &>/dev/null
 
-    echo "Checking if signatures need updates..."
-
-    if ! hash wget &>/dev/null; then
-    echo "Error: wget not found/installed."
-    entertocontinue
-    return 1
-    fi
-
-    if ! hash sha256sum &>/dev/null; then
-        echo "Error: sha256sum not found/installed."
-        entertocontinue
-        return 1
-    fi
+    echo "Checking if program and signatures need updates..."
 
     # Check if the .tmp file exists and contains a valid date
     if [ -f "$TMP_FILE" ]; then
@@ -559,48 +542,18 @@ signatureupdate () {
         local CURRENT_DATE=$(date +%Y-%m-%d)
         local DIFF=$(( ($(date +%s) - $(date -d "$LAST_DATE" +%s)) / 86400 ))
 
-        # Check if 15 days have passed
-        if [ "$DIFF" -ge 15 ]; then
-            # Download the file and its SHA-256 signature
-            if ! wget -qO- "$REMOTE_FILE" > "$SIGNATURE_INSPECTION_POINT"; then
-                echo "Error: Failed to download remote file."
-                sleep 2
-                return 1
-            fi
+        # Check if 5 days have passed
+        if [ "$DIFF" -ge 4 ]; then
 
-            if ! wget -qO- "$REMOTE_SIGNATURE" > "$KEY_SHA256_LOC"; then
-                echo "Error: Failed to download remote signature."
-                sleep 2
-                return 1
-            fi
-
-            # Verify the file using the SHA-256 signature
-            local REMOTE_CHECKSUM=$(cat "$KEY_SHA256_LOC")
-            local LOCAL_CHECKSUM=$(sha256sum "$SIGNATURE_INSPECTION_POINT" | cut -d ' ' -f1)
-
-            if [ "$REMOTE_CHECKSUM" != "$LOCAL_CHECKSUM" ]; then
-                echo "Error: SHA-256 verification failed. Local checksum: $LOCAL_CHECKSUM, Remote checksum: $REMOTE_CHECKSUM."
-                sleep 2
-                return 1
-            fi
-
-                # If the verification is successful, update the local file
-                cat "$SIGNATURE_INSPECTION_POINT" >> "$SIGNATUREUPDATEPATH"
-
-                signatureupdatenotice="1"
-
-                # Update the .tmp file with the current date
-                echo "$CURRENT_DATE" > "$TMP_FILE"
-
-                echo "Signatures have been updated."
-
-                sleep 1
-
-                checkforupdates
+                signatureupdate-force
+                pullforupdates
 
             fi
 
         fi
+
+        # Update the .tmp file with the current date
+        echo "$CURRENT_DATE" > "$TMP_FILE"
 
 }
 
@@ -709,7 +662,9 @@ Trust for $programname Scripts has been defaulted." | center
 
 }
 
-checkforupdates () {
+checkforupdates-force () {
+
+rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
 
 echo "
 Checking if $programname needs updates...
@@ -759,11 +714,11 @@ select yn in "Yes" "No"; do
       rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
       update_flag
       echo "You must restart the program, exiting now." | center
-      sleep 2
+      sleep 1
       exit;;
     No )
       echo "Update cancelled."
-      sleep 2
+      sleep 1
       break;;
   esac
 done
@@ -779,7 +734,63 @@ else
   update_flag
 fi
 
-sleep 2
+sleep 1
+
+}
+
+pullforupdates () {
+
+#rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
+
+echo "
+Checking if $programname needs updates...
+"
+
+remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
+
+remote_beta_status=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*' | awk '{if ($0 ~ /BETA/) {print "BETA"} else {print "Stable"}}')
+
+remote_version=$(curl -L -s $remote_file_loc | grep -oP '(?<=version=")[^"]*')
+local_version="$version"
+
+if [[ $remote_version =~ ([0-9]+\.[0-9]+) ]]; then
+  remote_version=${BASH_REMATCH[1]}
+fi
+
+if [[ $remote_version =~ BETA ]]; then
+  remote_is_beta=true
+else
+  remote_is_beta=false
+fi
+
+if [[ $local_version =~ BETA ]]; then
+  local_is_beta=true
+else
+  local_is_beta=false
+fi
+
+if [[ $remote_version > $local_version ]]; then
+  echo "There's an update available!"
+
+  #echo "$programname is currently: $local_version"
+  echo ""
+  echo "update flag: 1" > $localtempdirectory/update_flag.tmp
+  echo "version: $remote_version" | tee -a "$localtempdirectory/update_flag.tmp" #&>/dev/null
+  echo "stage: $remote_beta_status" | tee -a "$localtempdirectory/update_flag.tmp" #&>/dev/null
+
+  needsupdates="1"
+  update_flag
+
+elif [[ $remote_version < $local_version ]]; then
+  echo "$programname is up to date."
+  #echo "$programname is up to date: $local_version"
+  needsupdates="0"
+  update_flag
+else
+  echo "Versions are the same"
+  needsupdates="0"
+  update_flag
+fi
 
 }
 
@@ -803,8 +814,8 @@ fi
 
 if [ "$updateflag" == 1 ]; then
   needsupdates="1"
-  remote_version=$(cat "$localtempdirectory/update_flag.tmp" | grep 'version: ' | awk '{ print $2 }')
-  remote_beta_status=$(cat "$localtempdirectory/update_flag.tmp" | grep 'stage: ' | awk '{ print $2 }')
+  remote_version=$(cat "$localtempdirectory/update_flag.tmp" | grep 'version: ' | tail -n '1' | awk '{ print $2 }')
+  remote_beta_status=$(cat "$localtempdirectory/update_flag.tmp" | grep 'stage: ' | tail -n '1' | awk '{ print $2 }')
 else
   needsupdates="0"
 fi
@@ -1286,7 +1297,7 @@ runghost (){
 
     if [ "$needsupdates" == 0 ]; then
     updatesmenuitem="Check $programname for updates"
-    checkforupdates
+    checkforupdates-force
     update_flag
     fi
 

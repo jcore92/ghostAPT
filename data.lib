@@ -512,7 +512,7 @@ $current_checksum"
   if [ "$current_checksum" == "$stored_checksum" ]; then
     echo "
 This script is SIGNED and is trusted by its signature."
-    sleep 3
+    sleep 2
   else
     echo "
                 This script is UNSIGNED and may not be safe to run!

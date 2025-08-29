@@ -371,7 +371,7 @@ header-script (){
 
   }
 
-  logo1 ; topheader ; #bottomheader #; version
+  logo1 ; topheader ; sleep 1 ; #bottomheader #; version
 
 }
 

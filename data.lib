@@ -206,16 +206,12 @@ if [ "$needsupdates" == 1 ]; then
 
 installationstatus="DEPRECATED"
 
-echo "
-Installation Status: $installationstatus, $remote_version $remote_beta_status available!
-
+echo "Installation Status: $installationstatus, $remote_version $remote_beta_status available!
 " | center
 
 else
 
-echo "
-Installation Status: $installationstatus
-
+echo "Installation Status: $installationstatus
 " | center
 
 fi
@@ -511,8 +507,8 @@ $current_checksum"
   # Verify the checksum
   if [ "$current_checksum" == "$stored_checksum" ]; then
     echo "
-This script is SIGNED and is trusted by its signature."
-    sleep 3
+This script is SIGNED and is trusted by it's signature."
+    sleep 2
   else
     echo "
                 This script is UNSIGNED and may not be safe to run!
@@ -524,7 +520,9 @@ This script is SIGNED and is trusted by its signature."
 }
 
 
-autoupdatechecker () {
+autoupdatechecker() {
+    # ⚙️ Number of days after which to check for updates
+    local UPDATE_INTERVAL_DAYS=5
 
     local TMP_FILE="$localtempdirectory/update_timestamp.tmp"
 
@@ -533,28 +531,42 @@ autoupdatechecker () {
 
     echo "Checking if program and signatures need updates..."
 
+    # Always get current date and time in seconds
+    local CURRENT_EPOCH=$(date +%s)
+    local CURRENT_DATE=$(date +%Y-%m-%d)
+
+    local LAST_DATE=""
+    local DIFF=0
+
     # Check if the .tmp file exists and contains a valid date
     if [ -f "$TMP_FILE" ]; then
-        # Read the date from the .tmp file
-        local LAST_DATE=$(cat "$TMP_FILE")
+        LAST_DATE=$(cat "$TMP_FILE" | tr -d '\r\n')  # Sanitize input
 
-        # Calculate the difference in days between the current date and the last date
-        local CURRENT_DATE=$(date +%Y-%m-%d)
-        local DIFF=$(( ($(date +%s) - $(date -d "$LAST_DATE" +%s)) / 86400 ))
-
-        # Check if 5 days have passed
-        if [ "$DIFF" -ge 4 ]; then
-
-                signatureupdate-force
-                pullforupdates
-
-            fi
-
+        # Check if LAST_DATE is a valid date
+        if date -d "$LAST_DATE" +%s &>/dev/null; then
+            local LAST_EPOCH=$(date -d "$LAST_DATE" +%s)
+            DIFF=$(( (CURRENT_EPOCH - LAST_EPOCH) / 86400 ))
+        else
+            # Treat invalid date as expired (force update)
+            echo "Warning: Invalid or corrupted date in timestamp file. Forcing update check."
+            DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
         fi
+    else
+        # No previous timestamp — treat as expired (first run)
+        echo "No previous update timestamp found. Initializing..."
+        DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
+    fi
 
-        # Update the .tmp file with the current date
-        echo "$CURRENT_DATE" > "$TMP_FILE"
+    # Check if the required number of days has passed
+    if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
+        signatureupdate-force
+        pullforupdates
+    else
+        echo "Update check skipped. Last check was $DIFF day(s) ago. Next check in $((UPDATE_INTERVAL_DAYS - DIFF)) day(s)."
+    fi
 
+    # Update the .tmp file with the current date
+    echo "$CURRENT_DATE" > "$TMP_FILE"
 }
 
 

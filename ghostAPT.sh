@@ -10,8 +10,8 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    version="2.2 BETA"
-    builddate="built on 8/25/2025"
+    version="2.3 BETA"
+    builddate="built on 8/28/2025"
     ghbranch="main"
 
     # Terminal rules
@@ -104,6 +104,8 @@ loadlibraries (){
 
 preloader (){
 
+    errorlogfilename="ghostAPT_ERRORLOG_README.txt"
+
     # Ubuntu Check
     ubuntucheck (){
 
@@ -111,18 +113,20 @@ preloader (){
 
     if [ "$getosname" == Ubuntu ]; then
     #konsole -e bash -c "echo 'Ubuntu is installed.' ; sleep 1"
-    echo "Ubuntu is installed."
+    echo "Ubuntu base is installed."
+    isubuntu="✅ Ubuntu base is installed."
     else
     echo "Ubuntu is not installed but is required. Your system man not be compatible with this program. Please install on an Ubuntu-based KDE installation." ; sleep 2
-    echo "Logging to $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    echo "Logging to $HOME/Desktop/$errorlogfilename
     "
-    date | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    date | tee -a $HOME/Desktop/$errorlogfilename
     echo "Ubuntu is not installed but is required. Your system man not be compatible with this program. Please install on an Ubuntu-based KDE installation. in order to run $programname.
-    " | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Please restart $programname after required packages have been installed.
     "
+    isubuntu="❌ Ubuntu base is NOT installed."
     sleep 1
-    exit
+    #exit
     fi
 
     }
@@ -135,17 +139,19 @@ preloader (){
     if [ "$decheck" == KDE ]; then
     #konsole -e bash -c "echo 'KDE is installed.' ; sleep 1"
     echo "KDE is installed."
+    iskde="✅ KDE is installed."
     else
     echo "KDE is not installed but is required. Your system man not be compatible with this program. You could try to install KDE packages and it may or may not work, otherwise please install on a fresh install of KDE." ; sleep 2
-    echo "Logging to $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    echo "Logging to $HOME/Desktop/$errorlogfilename
     "
-    date | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    date | tee -a $HOME/Desktop/$errorlogfilename
     echo "The desktop environment 'KDE' is not installed but is required. Your system man not be compatible with this program. You could try to install KDE packages and it may or may not work, otherwise please install on a fresh install of KDE on a Ubuntu-based distribution in order to run $programname.
-    " | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Please restart $programname after required packages have been installed.
     "
+    iskde="❌ KDE is NOT installed."
     sleep 1
-    exit
+    #exit
     fi
 
     }
@@ -158,18 +164,20 @@ preloader (){
     if [ "$doeskonsoleexist" == konsole ]; then
     #konsole -e bash -c "echo 'Konsole is installed.' ; sleep 1"
     echo "Konsole is installed."
+    haskonsole="✅ Konsole is installed."
     else
     echo "Konsole is not installed but is required. Please restart $programname after required packages have been installed.
     " ; sleep 2
-    echo "Logging to $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    echo "Logging to $HOME/Desktop/$errorlogfilename
     "
-    date | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    date | tee -a $HOME/Desktop/$errorlogfilename
     echo "The package 'Konsole' is not installed. You need to open a terminal window and run the command 'sudo apt install konsole' in order to run $programname.
-    " | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Please restart $programname after required packages have been installed.
     "
+    haskonsole="❌ Konsole is NOT installed."
     sleep 2
-    exit
+    #exit
     fi
 
     }
@@ -182,18 +190,20 @@ preloader (){
     if [ "$doescurlexist" == curl ]; then
     #konsole -e bash -c "echo 'Curl is installed.' ; sleep 1"
     echo "Curl is installed."
+    hascurl="✅ Curl is installed."
     else
     konsole -e bash -c "echo 'Curl is not installed but is required. Please restart $programname after required packages have been installed.' ; sleep 2"
-    echo "Logging to $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    echo "Logging to $HOME/Desktop/$errorlogfilename
     "
-    date | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    date | tee -a $HOME/Desktop/$errorlogfilename
     echo "The package 'Curl' is not installed. You need to open a terminal window and run the command 'sudo apt install curl' in order to run $programname.
-    " | tee -a $HOME/Desktop/ghostAPT_ERRORLOG_README.txt
+    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Please restart $programname after required packages have been installed.
     "
+    hascurl="❌ Curl is NOT installed."
     sleep 1
     konsole -e "sudo apt install curl" &
-    exit
+    #exit
     fi
 
     }
@@ -201,12 +211,28 @@ preloader (){
     # Sign off
     compatibilitycheck (){
 
-    konsole -e bash -c "echo '✅ Ubuntu is installed.' ; sleep 1 ; echo '✅ KDE is installed.' ; sleep 1 ; echo '✅ Konsole is installed.' ; sleep 1 ; echo '✅ Curl is installed.' ; sleep 1"
+    konsole -e bash -c "echo '$isubuntu' ; sleep .5 ; echo '$iskde' ; sleep .5 ; echo '$haskonsole' ; sleep .5 ; echo '$hascurl' ; sleep 1"
+
+    if [ "$isubuntu" == "❌ Ubuntu base is NOT installed." ]; then
+    exit
+    fi
+
+    if [ "$iskde" == "❌ KDE is NOT installed." ]; then
+    exit
+    fi
+
+    if [ "$haskonsole" == "❌ Konsole is NOT installed." ]; then
+    exit
+    fi
+
+    if [ "$hascurl" == "❌ Curl is NOT installed." ]; then
+    exit
+    fi
 
     }
 
     # Libraries and Variables
-    ubuntucheck ; kdecheck ; konsolecheck ; curlcheck ; compatibilitycheck #; sleep 1
+    ubuntucheck ; kdecheck ; konsolecheck ; curlcheck
 
     echo "Starting up..."
 
@@ -247,26 +273,29 @@ exit
 fi
 
 if [ "$1" == init ]; then
+preloader ; sleep .2 ; clear
 signatureupdate-force ; checkforupdates-force
 exit
 fi
 
 if [ "$1" == run ]; then
+preloader
 #signatureupdate-force ; pullforupdates
-ghbranch="main" ; autoupdatechecker ; runghost
+ghbranch="main" ; autoupdatechecker ; sleep .2 ; clear ; runghost
 exit
 fi
 
 if [ "$1" == testing ]; then
+preloader
 #signatureupdate-force ; pullforupdates
-ghbranch="testing" ; autoupdatechecker ; runghost
+ghbranch="testing" ; autoupdatechecker ; sleep .2 ; clear ; runghost
 exit
 fi
 
 if [ "$1" == install ]; then
 installer
 else
-preloader
+preloader ; compatibilitycheck
 # switch script over to konsole and runs installer
 konsole -e "./ghostAPT.sh install"
 fi

@@ -511,7 +511,7 @@ $current_checksum"
   # Verify the checksum
   if [ "$current_checksum" == "$stored_checksum" ]; then
     echo "
-This script is SIGNED and is trusted by its signature."
+This script is SIGNED and is trusted by it's signature."
     sleep 2
   else
     echo "

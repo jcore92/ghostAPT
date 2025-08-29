@@ -10,7 +10,7 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    version="2.3 BETA"
+    version="2.4 BETA"
     builddate="built on 8/28/2025"
     ghbranch="main"
 
@@ -233,8 +233,6 @@ preloader (){
 
     # Libraries and Variables
     ubuntucheck ; kdecheck ; konsolecheck ; curlcheck
-
-    echo "Starting up..." | center
 
 }
 

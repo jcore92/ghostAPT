@@ -113,7 +113,7 @@ preloader (){
 
     if [ "$getosname" == Ubuntu ]; then
     #konsole -e bash -c "echo 'Ubuntu is installed.' ; sleep 1"
-    echo "Ubuntu base is installed."
+    echo "Ubuntu base is installed." | center
     isubuntu="✅ Ubuntu base is installed."
     else
     echo "Ubuntu is not installed but is required. Your system man not be compatible with this program. Please install on an Ubuntu-based KDE installation." ; sleep 2
@@ -138,7 +138,7 @@ preloader (){
 
     if [ "$decheck" == KDE ]; then
     #konsole -e bash -c "echo 'KDE is installed.' ; sleep 1"
-    echo "KDE is installed."
+    echo "KDE is installed." | center
     iskde="✅ KDE is installed."
     else
     echo "KDE is not installed but is required. Your system man not be compatible with this program. You could try to install KDE packages and it may or may not work, otherwise please install on a fresh install of KDE." ; sleep 2
@@ -163,7 +163,7 @@ preloader (){
 
     if [ "$doeskonsoleexist" == konsole ]; then
     #konsole -e bash -c "echo 'Konsole is installed.' ; sleep 1"
-    echo "Konsole is installed."
+    echo "Konsole is installed." | center
     haskonsole="✅ Konsole is installed."
     else
     echo "Konsole is not installed but is required. Please restart $programname after required packages have been installed.
@@ -189,7 +189,7 @@ preloader (){
 
     if [ "$doescurlexist" == curl ]; then
     #konsole -e bash -c "echo 'Curl is installed.' ; sleep 1"
-    echo "Curl is installed."
+    echo "Curl is installed." | center
     hascurl="✅ Curl is installed."
     else
     konsole -e bash -c "echo 'Curl is not installed but is required. Please restart $programname after required packages have been installed.' ; sleep 2"
@@ -234,7 +234,7 @@ preloader (){
     # Libraries and Variables
     ubuntucheck ; kdecheck ; konsolecheck ; curlcheck
 
-    echo "Starting up..."
+    echo "Starting up..." | center
 
 }
 
@@ -281,14 +281,14 @@ fi
 if [ "$1" == run ]; then
 preloader
 #signatureupdate-force ; pullforupdates
-ghbranch="main" ; autoupdatechecker ; sleep .2 ; clear ; runghost
+ghbranch="main" ; autoupdatechecker ; clear ; runghost
 exit
 fi
 
 if [ "$1" == testing ]; then
 preloader
 #signatureupdate-force ; pullforupdates
-ghbranch="testing" ; autoupdatechecker ; sleep .2 ; clear ; runghost
+ghbranch="testing" ; autoupdatechecker ; clear ; runghost
 exit
 fi
 

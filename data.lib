@@ -529,7 +529,7 @@ autoupdatechecker() {
     # Create the temporary directory if it doesn't exist
     mkdir -p "$localtempdirectory" &>/dev/null
 
-    echo "Checking if program and signatures need updates..."
+    echo "Checking if program and signatures need updates..." | center
 
     # Always get current date and time in seconds
     local CURRENT_EPOCH=$(date +%s)
@@ -548,12 +548,16 @@ autoupdatechecker() {
             DIFF=$(( (CURRENT_EPOCH - LAST_EPOCH) / 86400 ))
         else
             # Treat invalid date as expired (force update)
-            echo "Warning: Invalid or corrupted date in timestamp file. Forcing update check."
+            echo "Warning: Invalid or corrupted date in timestamp file. Forcing update check." | center
+            # Update the .tmp file with the current date
+            echo "$CURRENT_DATE" > "$TMP_FILE"
             DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
         fi
     else
         # No previous timestamp — treat as expired (first run)
-        echo "No previous update timestamp found. Initializing..."
+        echo "No previous update timestamp found. Initializing..." | center
+        # Update the .tmp file with the current date
+        echo "$CURRENT_DATE" > "$TMP_FILE"
         DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
     fi
 
@@ -561,12 +565,14 @@ autoupdatechecker() {
     if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
         signatureupdate-force
         pullforupdates
+        # ✅ Reset the timestamp to today after update
+        echo "$CURRENT_DATE" > "$TMP_FILE"
     else
-        echo "Update check skipped. Last check was $DIFF day(s) ago. Next check in $((UPDATE_INTERVAL_DAYS - DIFF)) day(s)."
+        echo "Update check skipped. Last check was $DIFF day(s) ago. Next check in $((UPDATE_INTERVAL_DAYS - DIFF)) day(s)." | center
     fi
 
-    # Update the .tmp file with the current date
-    echo "$CURRENT_DATE" > "$TMP_FILE"
+    sleep 1
+
 }
 
 
@@ -680,7 +686,7 @@ rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
 
 echo "
 Checking if $programname needs updates...
-"
+" | center
 
 remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
@@ -706,7 +712,7 @@ else
 fi
 
 if [[ $remote_version > $local_version ]]; then
-  echo "There's an update available!"
+  echo "There's an update available!" | center
 
   #echo "$programname is currently: $local_version"
   echo ""
@@ -717,7 +723,7 @@ if [[ $remote_version > $local_version ]]; then
   needsupdates="1"
   update_flag
 
-  echo "Update available for $programname. Do you want to update?"
+  echo "Update available for $programname. Do you want to update?" | center
 select yn in "Yes" "No"; do
   case $yn in
     Yes )
@@ -729,19 +735,19 @@ select yn in "Yes" "No"; do
       sleep 1
       exit;;
     No )
-      echo "Update cancelled."
+      echo "Update cancelled." | center
       sleep 1
       break;;
   esac
 done
 
 elif [[ $remote_version < $local_version ]]; then
-  echo "$programname is up to date."
+  echo "$programname is up to date." | center
   #echo "$programname is up to date: $local_version"
   needsupdates="0"
   update_flag
 else
-  echo "Versions are the same"
+  echo "Versions are the same" | center
   needsupdates="0"
   update_flag
 fi
@@ -782,7 +788,7 @@ else
 fi
 
 if [[ $remote_version > $local_version ]]; then
-  echo "There's an update available!"
+  echo "There's an update available!" | center
 
   #echo "$programname is currently: $local_version"
   echo ""
@@ -794,12 +800,12 @@ if [[ $remote_version > $local_version ]]; then
   update_flag
 
 elif [[ $remote_version < $local_version ]]; then
-  echo "$programname is up to date."
+  echo "$programname is up to date." | center
   #echo "$programname is up to date: $local_version"
   needsupdates="0"
   update_flag
 else
-  echo "Versions are the same"
+  echo "Versions are the same" | center
   needsupdates="0"
   update_flag
 fi

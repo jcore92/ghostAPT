@@ -206,16 +206,12 @@ if [ "$needsupdates" == 1 ]; then
 
 installationstatus="DEPRECATED"
 
-echo "
-Installation Status: $installationstatus, $remote_version $remote_beta_status available!
-
+echo "Installation Status: $installationstatus, $remote_version $remote_beta_status available!
 " | center
 
 else
 
-echo "
-Installation Status: $installationstatus
-
+echo "Installation Status: $installationstatus
 " | center
 
 fi

@@ -245,6 +245,48 @@ Exec=konsole -e \"/usr/local/bin/ghostAPT install\"" | tee $HOME/Desktop/"$progr
 
 }
 
+repositorylist (){
+
+    echo "Downloading The Ghost Team Script Collection (Repository)..."
+
+    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection (Repository).ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20(Repository).ghost"
+
+    echo "Downloading JCore92 Script Collection (Repository)..."
+
+    curl -L -o "$localinstalldirectory/Get Ghost Scripts/JCore92 Script Collection (Repository).ghost" "https://github.com/jcore92/JCore92-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/JCore92%20Script%20Collection%20(Repository).ghost"
+
+}
+
+refreshrepositories (){
+
+    # Cleanup function: accepts a file path and removes it if it exists
+    cleanup_old_file() {
+        local filepath="$1"
+
+        if [ -f "$filepath" ]; then
+            echo "Removing old file: $filepath"
+            rm -rfv "$filepath"
+        fi
+    }
+
+    # List of old repository files to clean up (during update)
+    OLD_SCRIPTS=(
+        "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost"
+        "$localinstalldirectory/Get Ghost Scripts/JCore92 Script Collection - Repository.ghost"
+        "$localinstalldirectory/Linux Commands/Find - Classic.ghost"
+        "$localinstalldirectory/Linux Commands/Find - Modern.ghost"
+        # Add more legacy filenames here as needed
+    )
+
+    # Run cleanup for each file
+    for oldfile in "${OLD_SCRIPTS[@]}"; do
+        cleanup_old_file "$oldfile"
+    done
+
+    repositorylist
+
+}
+
 installation (){
 
     libraryhandlerinstaller (){
@@ -333,7 +375,7 @@ Starting Installation...
 
     mkdir "$localinstalldirectory/Get Ghost Scripts" &>/dev/null
 
-    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection - Repository.ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/$ghbranch/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20-%20Repository.ghost"
+    repositorylist
 
     # Clean temp folder
     echo "
@@ -482,8 +524,8 @@ $current_checksum"
 
   # Extract the author and script name from the signature line
   stored_checksum=$(echo "$signature_line" | cut -d ' ' -f1)
-  author_checksum=$(echo "$signature_line" | awk -F '[(|)]' '{print $1}' | cut -d ' ' -f2-)
-  scriptname_checksum=$(echo "$signature_line" | cut -d '(' -f2 | cut -d ')' -f1)
+  author_checksum=$(echo "$signature_line" | cut -d ' ' -f2- | awk -F '[' '{print $1}')
+  scriptname_checksum=$(echo "$signature_line" | cut -d '[' -f2 | cut -d ']' -f1)
 
   # Handle cases where the author or script name is not found
   if [ -z "$author_checksum" ]; then
@@ -566,6 +608,7 @@ autoupdatechecker() {
     if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
         signatureupdate-force
         pullforupdates
+        refreshrepositories
         # ✅ Reset the timestamp to today after update
         echo "$CURRENT_DATE" > "$TMP_FILE"
     else
@@ -686,7 +729,7 @@ checkforupdates-force () {
 rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
 
 echo "
-Checking if $programname needs updates...
+Checking if $programname and main repositories needs updates...
 " | center
 
 remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
@@ -752,6 +795,8 @@ else
   needsupdates="0"
   update_flag
 fi
+
+refreshrepositories
 
 sleep 1
 
@@ -861,6 +906,7 @@ ghost_updater() {
     echo "Performing update...please wait" | center
     # Clear the old log
     rm -rf "$localtempdirectory/$log_file" &>/dev/null
+    date | tee -a $log_file
     echo "Downloading remote files..." >> "$log_file"
     for file in "${remote_files[@]}"; do
       if curl -L -s "$file" > "$localinstalldirectory/$(basename "$file")"; then
@@ -870,6 +916,8 @@ ghost_updater() {
       fi
     done
     echo "Remote files downloaded successfully." >> "$log_file"
+    echo "Refreshing repositories..."
+    refreshrepositories
     rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
     ghostAPT installicons
     echo "
@@ -878,6 +926,7 @@ You must restart the program, exiting now.
     sleep 2
     exit
   else
+    date | tee -a $log_file
     echo "No updates available." >> "$log_file"
   fi
 

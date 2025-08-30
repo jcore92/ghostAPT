@@ -22,6 +22,7 @@ credits (){
 echo "Developer(s):-JCore92
 --
 Website:-https://www.jcorestudios.com/
+-https://github.com/jcore92/ghostAPT
 --
 License:-Open Source/Freeware (If forked, please give
 -credit to the original project/developer. If
@@ -762,7 +763,7 @@ pullforupdates () {
 
 echo "
 Checking if $programname needs updates...
-"
+" | center
 
 remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
 
@@ -793,8 +794,8 @@ if [[ $remote_version > $local_version ]]; then
   #echo "$programname is currently: $local_version"
   echo ""
   echo "update flag: 1" > $localtempdirectory/update_flag.tmp
-  echo "version: $remote_version" | tee -a "$localtempdirectory/update_flag.tmp" #&>/dev/null
-  echo "stage: $remote_beta_status" | tee -a "$localtempdirectory/update_flag.tmp" #&>/dev/null
+  echo "version: $remote_version" | tee -a "$localtempdirectory/update_flag.tmp" | center #&>/dev/null
+  echo "stage: $remote_beta_status" | tee -a "$localtempdirectory/update_flag.tmp" | center #&>/dev/null
 
   needsupdates="1"
   update_flag
@@ -964,10 +965,10 @@ directory_menu() {
     read -p "Press Enter to continue..."
     return
   fi
-
+  echo "Ghost Scripts -> Categories"
   # Use cursor menu for selection
   local selected
-  basic_cursor_menu "Select a Category to open:" selected "${menu[@]}"
+  basic_cursor_menu " " selected "${menu[@]}"
 
   # Process selection
   if [ "$selected" == "Back" ]; then
@@ -1022,12 +1023,11 @@ display_ghost_files() {
     clear && printf '\e[3J'
     header
     installationstatus
-    echo "Category: $selected
-" | center
+    echo "Ghost Scripts -> Categories -> $selected"
 
     # Show cursor menu
     local selection
-    basic_cursor_menu "Select a Ghost Script to run:" selection "${ghost_file_names[@]}"
+    basic_cursor_menu " " selection "${ghost_file_names[@]}"
 
     case "$selection" in
       "Back")
@@ -1044,8 +1044,8 @@ display_ghost_files() {
         clear && printf '\e[3J'
         header
         installationstatus
-
-        basic_cursor_menu "Select a Ghost Script to edit:" edit_selection "${edit_options[@]}"
+        echo "Select a Ghost Script to edit:"
+        basic_cursor_menu " " edit_selection "${edit_options[@]}"
 
         if [ "$edit_selection" == "Back" ]; then
           continue  # Return to main menu
@@ -1278,7 +1278,8 @@ runghost (){
 
         # Usage:
         choices=("View Ghost Scripts" "View System Info" "$updatesmenuitem" "Signature Management" "About $programname" "Exit $programname")
-        basic_cursor_menu "Please make a selection below:" selected "${choices[@]}"
+        echo "Please make a selection below:"
+        basic_cursor_menu " " selected "${choices[@]}"
         #echo "
 #Selected: $selected
 #"
@@ -1297,7 +1298,7 @@ runghost (){
 
     if [ "$selected" == "View System Info" ]; then
 
-    clear ; header ; installationstatus ; systeminfo ; sysinfo-copyall ; sleep 1
+    clear ; header ; installationstatus ; systeminfo ; sysinfo-copyall ; sleep .7
     clear ; header ; installationstatus ; systeminfo ; sysinfo-all
     echo "System Information has been copied to your clipboard." | center
     entertocontinue | center
@@ -1329,7 +1330,8 @@ runghost (){
 
         # Usage:
         choices=("Update Signatures" "Repair Signatures" "Trust All Installed Signatures" "Back")
-        basic_cursor_menu "Please make a selection below:" selected "${choices[@]}"
+        echo "Please make a selection below:"
+        basic_cursor_menu " " selected "${choices[@]}"
 
         if [ "$selected" == "Update Signatures" ]; then
         signatureupdate-force

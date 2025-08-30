@@ -47,7 +47,7 @@ process_file() {
 
     # Generate SHA-256 checksum
     if checksum=$(sha256sum "$file" 2>/dev/null | cut -d' ' -f1); then
-        echo "${checksum} $signatureid (${base_name})" >> "$signature_file"
+        echo "${checksum} $signatureid [${base_name}]" >> "$signature_file"
     else
         zenity --warning --text="Failed to compute checksum for: $file" --title="Checksum Error"
     fi

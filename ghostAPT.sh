@@ -10,7 +10,7 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    version="2.4 BETA"
+    version="2.5 BETA"
     builddate="built on 8/28/2025"
     ghbranch="main"
 

@@ -43,7 +43,7 @@ Start menu/desktop icon:
 
 Currently Known Bugs
 =====================================================================
-* Empty folders inside ghostAPT won't allow you to exit that folder. There will be a fix for this as soon as I get time to investigate the issue.
+* Will update this with outstanding bugs as I find them...
 
 Installation
 =====================================================================

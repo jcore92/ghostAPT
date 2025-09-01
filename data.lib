@@ -1034,7 +1034,7 @@ directory_menu() {
       clear && printf '\e[3J'
       header
       installationstatus
-      echo "Select a $programname Script to run:"
+      echo "Ghost Scripts -> Categories -> $selected"
       echo
       display_ghost_files "$selected"
     done
@@ -1066,9 +1066,11 @@ display_ghost_files() {
 
   # If no scripts found
   if [ ${#ghost_file_names[@]} -eq 2 ]; then
-    echo "No .ghost scripts found."
-    entertocontinue
+    echo "0 Ghost Scripts detected."
+    entertocontinue | center
+    scriptmenusticky="0"
     return
+    #break
   fi
 
   # Main loop — this will re-show the menu after every action

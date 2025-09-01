@@ -109,24 +109,23 @@ preloader (){
     # Ubuntu Check
     ubuntucheck (){
 
-    getosname=$(grep -E '^(PRETTY_NAME)=' /etc/os-release | awk -F'="?' '{print $2}' | awk -F' ' '{print $1}' | tr -d '"')
+    #getosname=$(grep -E '^(PRETTY_NAME)=' /etc/os-release | awk -F'="?' '{print $2}' | awk -F' ' '{print $1}' | tr -d '"')
+    getosname=$(grep -o "ubuntu" /etc/os-release | head -n 1)
 
-    if [ "$getosname" == Ubuntu ]; then
-    #konsole -e bash -c "echo 'Ubuntu is installed.' ; sleep 1"
-    echo "Ubuntu base is installed." | center
+    if [ "$getosname" == ubuntu ]; then
+    echo "✅ Ubuntu base is installed.
+" | center
     isubuntu="✅ Ubuntu base is installed."
     else
-    echo "Ubuntu is not installed but is required. Your system man not be compatible with this program. Please install on an Ubuntu-based KDE installation." ; sleep 2
+    date | tee -a $HOME/Desktop/$errorlogfilename
+    echo "Ubuntu is NOT installed but is required. Your system is NOT compatible with this program. Please install on an Ubuntu-based installation in order to run $programname.
+    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Logging to $HOME/Desktop/$errorlogfilename
     "
-    date | tee -a $HOME/Desktop/$errorlogfilename
-    echo "Ubuntu is not installed but is required. Your system man not be compatible with this program. Please install on an Ubuntu-based KDE installation. in order to run $programname.
-    " | tee -a $HOME/Desktop/$errorlogfilename
     echo "Please restart $programname after required packages have been installed.
     "
     isubuntu="❌ Ubuntu base is NOT installed."
-    sleep 1
-    #exit
+    sleep .5
     fi
 
     }
@@ -137,47 +136,19 @@ preloader (){
     decheck="$(echo $XDG_CURRENT_DESKTOP)"
 
     if [ "$decheck" == KDE ]; then
-    #konsole -e bash -c "echo 'KDE is installed.' ; sleep 1"
-    echo "KDE is installed." | center
+    echo "✅ KDE is installed. $programname is optimized for KDE.
+" | center
     iskde="✅ KDE is installed."
     else
-    echo "KDE is not installed but is required. Your system man not be compatible with this program. You could try to install KDE packages and it may or may not work, otherwise please install on a fresh install of KDE." ; sleep 2
-    echo "Logging to $HOME/Desktop/$errorlogfilename
-    "
-    date | tee -a $HOME/Desktop/$errorlogfilename
-    echo "The desktop environment 'KDE' is not installed but is required. Your system man not be compatible with this program. You could try to install KDE packages and it may or may not work, otherwise please install on a fresh install of KDE on a Ubuntu-based distribution in order to run $programname.
-    " | tee -a $HOME/Desktop/$errorlogfilename
-    echo "Please restart $programname after required packages have been installed.
-    "
+    #date | tee -a $HOME/Desktop/$errorlogfilename
+    echo "❌ The desktop environment 'KDE' is NOT installed. Your system may NOT be fully compatible with this program as extensive testing has NOT been done on your DE. For the best experience, please install on a fresh install of KDE on a Ubuntu based distribution.
+    " | center #| tee -a $HOME/Desktop/$errorlogfilename
+    #echo "Please restart $programname after required packages have been installed.
+    #"
+    #echo "Logging to $HOME/Desktop/$errorlogfilename...
+    #"
     iskde="❌ KDE is NOT installed."
-    sleep 1
-    #exit
-    fi
-
-    }
-
-    # Konsole install checker
-    konsolecheck (){
-
-    doeskonsoleexist="$(apt list --installed 2>/dev/null | grep -o konsole | head -n 1)"
-
-    if [ "$doeskonsoleexist" == konsole ]; then
-    #konsole -e bash -c "echo 'Konsole is installed.' ; sleep 1"
-    echo "Konsole is installed." | center
-    haskonsole="✅ Konsole is installed."
-    else
-    echo "Konsole is not installed but is required. Please restart $programname after required packages have been installed.
-    " ; sleep 2
-    echo "Logging to $HOME/Desktop/$errorlogfilename
-    "
-    date | tee -a $HOME/Desktop/$errorlogfilename
-    echo "The package 'Konsole' is not installed. You need to open a terminal window and run the command 'sudo apt install konsole' in order to run $programname.
-    " | tee -a $HOME/Desktop/$errorlogfilename
-    echo "Please restart $programname after required packages have been installed.
-    "
-    haskonsole="❌ Konsole is NOT installed."
-    sleep 2
-    #exit
+    sleep .5
     fi
 
     }
@@ -188,22 +159,21 @@ preloader (){
     doescurlexist="$(apt list --installed 2>/dev/null | grep -o curl | head -n 1)"
 
     if [ "$doescurlexist" == curl ]; then
-    #konsole -e bash -c "echo 'Curl is installed.' ; sleep 1"
-    echo "Curl is installed." | center
+    echo "✅ Curl is installed.
+" | center
     hascurl="✅ Curl is installed."
     else
-    konsole -e bash -c "echo 'Curl is not installed but is required. Please restart $programname after required packages have been installed.' ; sleep 2"
-    echo "Logging to $HOME/Desktop/$errorlogfilename
-    "
+    x-terminal-emulator -e "bash -c 'echo Curl is not installed but is required. Please restart $programname after required packages have been installed. ; sleep 2'"
+    #konsole -e bash -c "echo 'Curl is not installed but is required. Please restart $programname after required packages have been installed.' ; sleep 2"
     date | tee -a $HOME/Desktop/$errorlogfilename
     echo "The package 'Curl' is not installed. You need to open a terminal window and run the command 'sudo apt install curl' in order to run $programname.
     " | tee -a $HOME/Desktop/$errorlogfilename
-    echo "Please restart $programname after required packages have been installed.
+    echo "Logging to $HOME/Desktop/$errorlogfilename
     "
     hascurl="❌ Curl is NOT installed."
-    sleep 1
-    konsole -e "sudo apt install curl" &
-    #exit
+    sleep .5
+    x-terminal-emulator -e "bash -c 'sudo apt install curl'" &
+    #konsole -e "sudo apt install curl" &
     fi
 
     }
@@ -211,18 +181,13 @@ preloader (){
     # Sign off
     compatibilitycheck (){
 
-    konsole -e bash -c "echo '$isubuntu' ; sleep .5 ; echo '$iskde' ; sleep .5 ; echo '$haskonsole' ; sleep .5 ; echo '$hascurl' ; sleep 1"
-
     if [ "$isubuntu" == "❌ Ubuntu base is NOT installed." ]; then
     exit
     fi
 
     if [ "$iskde" == "❌ KDE is NOT installed." ]; then
-    exit
-    fi
-
-    if [ "$haskonsole" == "❌ Konsole is NOT installed." ]; then
-    exit
+    #exit
+    return
     fi
 
     if [ "$hascurl" == "❌ Curl is NOT installed." ]; then
@@ -231,8 +196,18 @@ preloader (){
 
     }
 
-    # Libraries and Variables
-    ubuntucheck ; kdecheck ; konsolecheck ; curlcheck
+    compatibilitycheck-visual (){
+
+    x-terminal-emulator -e "bash -c 'echo $isubuntu ; sleep .5 ; echo $iskde ; sleep .5 ; echo $hascurl ; sleep 2'"
+    #konsole -e bash -c "echo '$isubuntu' ; sleep .5 ; echo '$iskde' ; sleep .5 ; echo '$haskonsole' ; sleep .5 ; echo '$hascurl' ; sleep 1"
+
+    }
+
+    echo "Compability Check:
+" | center
+
+    # Libraries and Variables | konsolecheck
+    ubuntucheck ; kdecheck ; curlcheck
 
 }
 
@@ -271,32 +246,33 @@ exit
 fi
 
 if [ "$1" == init ]; then
-preloader ; sleep .2 ; clear
+preloader ; compatibilitycheck ; sleep .2 ; clear
 #signatureupdate-force
 refreshrepositories ; checkforupdates-force
 exit
 fi
 
 if [ "$1" == run ]; then
-preloader
+preloader ; compatibilitycheck
 #signatureupdate-force ; pullforupdates
-ghbranch="main" ; autoupdatechecker ; clear ; runghost
+ghbranch="main" ; autoupdatechecker ; entertocontinue | center ; clear ; runghost
 exit
 fi
 
 if [ "$1" == testing ]; then
-preloader
+preloader ; compatibilitycheck
 #signatureupdate-force ; pullforupdates
-ghbranch="testing" ; autoupdatechecker ; clear ; runghost
+ghbranch="testing" ; autoupdatechecker ; entertocontinue | center ; clear ; runghost
 exit
 fi
 
 if [ "$1" == install ]; then
 installer
 else
-preloader ; compatibilitycheck
+preloader ; compatibilitycheck-visual ; compatibilitycheck
 # switch script over to konsole and runs installer
-konsole -e "./ghostAPT.sh install"
+x-terminal-emulator -e "bash -c './ghostAPT.sh install'"
+#konsole -e "./ghostAPT.sh install"
 fi
 
 exit

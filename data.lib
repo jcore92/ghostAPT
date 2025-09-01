@@ -227,7 +227,7 @@ Version=1.0
 Name=ghostAPT
 GenericName=ghostAPT
 
-Exec=konsole -e \"/usr/local/bin/ghostAPT run\"
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT run'\"
 StartupNotify=true
 Terminal=false
 Icon=/usr/share/icons/ghostAPT/ghost.png
@@ -237,11 +237,11 @@ Actions=ghostAPT;manage-installion;
 
 [Desktop Action ghostAPT]
 Name=Run ghostAPT
-Exec=konsole -e \"/usr/local/bin/ghostAPT run\"
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT run'\"
 
 [Desktop Action manage-installion]
 Name=Manage ghostAPT Installation
-Exec=konsole -e \"/usr/local/bin/ghostAPT install\"" | tee $HOME/Desktop/"$programname" ; chmod u+x $HOME/Desktop/"$programname" ; sudo cp -fv $HOME/Desktop/"$programname" /usr/share/applications/"$programname.desktop"
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT install'\"" | tee $HOME/Desktop/"$programname.desktop" ; chmod u+x $HOME/Desktop/"$programname.desktop" ; sudo cp -fv $HOME/Desktop/"$programname.desktop" /usr/share/applications/"$programname.desktop"
 
 }
 
@@ -570,6 +570,10 @@ autoupdatechecker() {
     local UPDATE_INTERVAL_DAYS=5
 
     local TMP_FILE="$localtempdirectory/update_timestamp.tmp"
+
+    echo "
+Check for updates:
+" | center
 
     # Create the temporary directory if it doesn't exist
     mkdir -p "$localtempdirectory" &>/dev/null
@@ -1131,7 +1135,8 @@ display_ghost_files() {
         local checktrust=$(sha256sum "$full_path" | cut -d ' ' -f1)
 
         # Launch editor
-        konsole -e "nano \"$full_path\""
+        x-terminal-emulator -e bash -c 'exec nano "$0"' "$full_path"
+        #konsole -e "nano \"$full_path\""
         local updatetrust=$(sha256sum "$full_path" | cut -d ' ' -f1)
 
         # Update signature if changed
@@ -1172,7 +1177,9 @@ display_ghost_files() {
           echo ""
           echo "Running $selection..." | center
           echo ""
-          konsole -e "bash \"$full_path\"" &
+          chmod +x "$full_path"
+          x-terminal-emulator -e bash -c "'$full_path'" &> /dev/null &
+          #konsole -e "bash \"$full_path\"" &
         fi
 
         divider
@@ -1298,7 +1305,8 @@ Selected $selected
 
         if [ "$selected" == "Install $programname" ]; then echo "Proceeding to install $programname..."
             installation #| center
-            konsole -e "$localinstalldirectory/ghostAPT.sh run" &
+            x-terminal-emulator -e "bash -c '$localinstalldirectory/ghostAPT.sh run'" &
+            #konsole -e "$localinstalldirectory/ghostAPT.sh run" &
             exit
             #hierarchy="1"
         fi

@@ -7,7 +7,7 @@ ghostAPT utilizes SHA-256 signatures and has a trust system implemented in order
 
 Ghost Scripts come in many forms but the file must end in a '.ghost' extension and be placed inside a Category (folder) in order for ghostAPT to detect the Ghost Script inside the ghostAPT install directory. You can utilize our first party Ghost Scripts from within ghostAPT or you can manually download/add third party Ghost Scripts so long as they follow the prerequisites above and they are placed in the installation directory correctly: /home/YOU/ghostAPT/CATEGORY/script.ghost
 
-You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts, due to the signature engine, you should NOT include parenthesis '(' or ')' in the script name inside your script or the filename of your script or else ghostAPT will grab incorrect metadata when you run your scripts.
+You can name the folder (Category) or Ghost Scripts to whatever but to be safe keep naming conventions simple. When naming scripts, due to the signature engine, you should NOT include brackets '[' or ']' in the script name inside your script or the filename of your script or else ghostAPT will grab incorrect metadata when you run your scripts.
 
 The Ghost Team Script Collection
 =====================================================================
@@ -24,6 +24,26 @@ This decision was made because it was designed for it. I don't like many of the 
 You will need to install:
 Curl, Konsole, KDE, Ubuntu-based Distro
 
+Features
+=====================================================================
+Run from the terminal:
+
+    #This runs the main program
+    ghostAPT run
+
+    #These both run the installation manager.
+    ghostAPT
+    ghostAPT install
+
+Start menu/desktop icon:
+
+    right click either icon to:
+    -Run ghostAPT
+    -Manage ghostAPT installation
+
+Currently Known Bugs
+=====================================================================
+* Will update this with outstanding bugs as I find them...
 
 Installation
 =====================================================================

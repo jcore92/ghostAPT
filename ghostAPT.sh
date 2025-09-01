@@ -10,7 +10,7 @@ variables (){
     # Program information
     programname="ghostAPT"
     installername="Installation Manager"
-    version="2.5 BETA"
+    version="2.6 BETA"
     builddate="built on 8/28/2025"
     ghbranch="main"
 
@@ -272,7 +272,8 @@ fi
 
 if [ "$1" == init ]; then
 preloader ; sleep .2 ; clear
-signatureupdate-force ; checkforupdates-force
+#signatureupdate-force
+refreshrepositories ; checkforupdates-force
 exit
 fi
 

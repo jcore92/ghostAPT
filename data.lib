@@ -283,6 +283,10 @@ refreshrepositories (){
 
     repositorylist
 
+    echo "Updating signatures..." | center
+
+    signatureupdate-force
+
 }
 
 installation (){
@@ -295,7 +299,7 @@ installation (){
     $libraryname found in current directory. Copying to install directory...
     "
 
-    cp -v ./$libraryname $localinstalldirectory
+    mv -v ./$libraryname $localinstalldirectory
     else
 
     echo "
@@ -602,12 +606,10 @@ autoupdatechecker() {
 
     # Check if the required number of days has passed
     if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
-        echo "Updating signatures..." | center
-        signatureupdate-force
-        echo "Refreshing repositories..." | center
-        refreshrepositories
         echo "Checking if $programname needs updates..." | center
         pullforupdates
+        echo "Refreshing repositories..." | center
+        refreshrepositories
         # ✅ Reset the timestamp to today after update
         echo "$CURRENT_DATE" > "$TMP_FILE"
     else
@@ -801,7 +803,7 @@ Refreshing repositories...
 
 refreshrepositories
 
-sleep 1
+entertocontinue
 
 }
 

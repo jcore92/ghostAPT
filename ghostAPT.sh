@@ -272,7 +272,8 @@ fi
 
 if [ "$1" == init ]; then
 preloader ; sleep .2 ; clear
-signatureupdate-force ; checkforupdates-force ; refreshrepositories
+#signatureupdate-force
+refreshrepositories ; checkforupdates-force
 exit
 fi
 

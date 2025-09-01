@@ -604,10 +604,10 @@ autoupdatechecker() {
     if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
         echo "Updating signatures..." | center
         signatureupdate-force
-        echo "Checking if $programname needs updates..." | center
-        pullforupdates
         echo "Refreshing repositories..." | center
         refreshrepositories
+        echo "Checking if $programname needs updates..." | center
+        pullforupdates
         # ✅ Reset the timestamp to today after update
         echo "$CURRENT_DATE" > "$TMP_FILE"
     else
@@ -728,7 +728,7 @@ checkforupdates-force () {
 rm -rf "$localtempdirectory/update_flag.tmp" &>/dev/null
 
 echo "
-Checking if $programname and main repositories needs updates...
+Checking if $programname needs updates...
 " | center
 
 remote_file_loc="https://github.com/jcore92/ghostAPT/raw/refs/heads/$ghbranch/ghostAPT.sh"
@@ -794,6 +794,10 @@ else
   needsupdates="0"
   update_flag
 fi
+
+echo "
+Refreshing repositories...
+" | center
 
 refreshrepositories
 

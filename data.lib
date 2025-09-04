@@ -75,7 +75,7 @@ processorprobe="Processor:
 $(lscpu | grep 'Model name' | cut -f 2 -d ":" | awk '{$1=$1}1') - $(uname -m)"
 
 gpuprobe="Graphics:
-$(lspci | grep 'VGA compatible controller' | awk -F ':' '{sub(/^ */,"",$3); print $3}')"
+$(lspci | grep 'VGA compatible controller' | awk -F ': ' '{print $2}')"
 
 localipprobe="Local IP:
 $(hostname -I | head -n '1' | awk -F " " '{print $1}')"

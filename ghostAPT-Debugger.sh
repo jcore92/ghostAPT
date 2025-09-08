@@ -34,6 +34,7 @@ fi
 if [ "$FILENAME" = "ghostAPT.sh" ]; then
     MODE=$(zenity --list --title="Debug Mode" --text="Select debug mode for $FILENAME:" \
                   --column="Select" \
+                  " " \
                   "run" \
                   "install" \
                   "testing")

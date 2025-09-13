@@ -17,12 +17,10 @@ https://github.com/jcore92/The-Ghost-Team-Script-Collection
 
 Compatibility
 =====================================================================
-Currently, this will only work on an Ubuntu-based distro running KDE.
-
-This decision was made because it was designed for it. I don't like many of the other DE's out there BUT, I do understand there are others out there who like something else. A goal down the line is to make it so you only need Konsole and an Ubuntu-based distro to be able to run ghostAPT. This will take time, effort, and a lot of testing and I am the only developer to-date so if it isn't too much of a burden I will hopefully get around to it.
+ghostAPT will work on any Ubuntu based distribution.
 
 You will need to install:
-Curl, Konsole, KDE, Ubuntu-based Distro
+Ubuntu-based Distro, wget, zenity.
 
 Features
 =====================================================================
@@ -31,14 +29,14 @@ Run from the terminal:
     #This runs the main program
     ghostAPT run
 
-    #These both run the installation manager.
-    ghostAPT
-    ghostAPT install
+    #This runs the installation manager.
+    ghostAPT manage
 
 Start menu/desktop icon:
 
     right click either icon to:
     -Run ghostAPT
+    -Create ghostAPT icons
     -Manage ghostAPT installation
 
 Currently Known Bugs
@@ -47,12 +45,25 @@ Currently Known Bugs
 
 Installation
 =====================================================================
-Download the .zip file on GitHub.
+Download the .zip file here on GitHub. (Only use the official version here on GitHub as we DO NOT utilize any other outlets to distribute ghostAPT.)
 
 Extract the .zip file.
 
-Make sure that ghostAPT.sh is executable.
+Make sure that ghostAPT.sh is executable. (If you don't know how to do this search: 'How to make bash shell scripts executable?')
 
-Double click on ghostAPT.sh and execute it (it will open in Konsole).
+KDE:
+        
+    Double click on ghostAPT.sh and execute it.
+
+Gnome-based:
+        
+    Right click ghostAPT.sh and Run as Program.
+
+Terminal:
+ensure that you are in the same directory as ghostAPT.sh.
+
+run this command:
+
+    bash ghostAPT.sh
 
 Follow the Installation Manager and enjoy!

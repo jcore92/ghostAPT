@@ -19,20 +19,39 @@
 # Program development credits
 credits (){
 
-echo "Developer(s):-JCore92
+echo "About Program:-
+-$programname is a Script Running Engine.
+-Use scripts transparently by reviewing
+-the exact code before it's actually run
+-while being safeguarded with a script
+-Trust engine using SHA256 Signatures.
 --
-Website:-https://www.jcorestudios.com/
+-Easily setup a fresh Linux installation
+-to taste, quickly and effortlessly. You
+-can edit scripts or even make your own.
+--
+Developer(s):-
+-JCore92
+--
+Website:-
+-https://www.jcorestudios.com/
 -https://github.com/jcore92/ghostAPT
 --
-License:-Open Source/Freeware (If forked, please give
--credit to the original project/developer. If
--no credit is included you are not allowed to
--use any original names or likeness.)
+License:-
+-GNU General Public License v2.0
 --
-Notes:-Built for Kubuntu Focus 24.04 LTS.
--*Compatible with any Ubuntu based KDE distros.
+-(If forked, please give credit to the
+-original project and developer. If no
+-credit is included you are not allowed
+-to use any original names or likeness.)
 --
-Disclaimer:-We hold no liability for any negative outcomes
+Notes:-
+-Built for Kubuntu Focus.
+-Compatible with any Ubuntu based
+-distribution.*
+--
+Disclaimer:-
+-We hold no liability for any negative outcomes
 -to you or your devices. ALWAYS READ SCRIPTS
 -BEFORE YOU RUN THEM!
 --
@@ -75,7 +94,7 @@ processorprobe="Processor:
 $(lscpu | grep 'Model name' | cut -f 2 -d ":" | awk '{$1=$1}1') - $(uname -m)"
 
 gpuprobe="Graphics:
-$(lspci | grep 'VGA compatible controller' | awk -F ':' '{sub(/^ */,"",$3); print $3}')"
+$(lspci | grep 'VGA compatible controller' | awk -F ': ' '{print $2}')"
 
 localipprobe="Local IP:
 $(hostname -I | head -n '1' | awk -F " " '{print $1}')"
@@ -227,21 +246,25 @@ Version=1.0
 Name=ghostAPT
 GenericName=ghostAPT
 
-Exec=konsole -e \"/usr/local/bin/ghostAPT run\"
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT run'\"
 StartupNotify=true
 Terminal=false
 Icon=/usr/share/icons/ghostAPT/ghost.png
 Type=Application
 Categories=Utilities;
-Actions=ghostAPT;manage-installion;
+Actions=run-ghostAPT;create-icons;manage-installion;
 
-[Desktop Action ghostAPT]
+[Desktop Action run-ghostAPT]
 Name=Run ghostAPT
-Exec=konsole -e \"/usr/local/bin/ghostAPT run\"
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT run'\"
+
+[Desktop Action create-icons]
+Name=Create ghostAPT Icons
+Exec=x-terminal-emulator -e \"bash -c '/usr/local/bin/ghostAPT installicons'\"
 
 [Desktop Action manage-installion]
 Name=Manage ghostAPT Installation
-Exec=konsole -e \"/usr/local/bin/ghostAPT install\"" | tee $HOME/Desktop/"$programname" ; chmod u+x $HOME/Desktop/"$programname" ; sudo cp -fv $HOME/Desktop/"$programname" /usr/share/applications/"$programname.desktop"
+Exec=bash -c '/usr/local/bin/ghostAPT manage'" | tee $HOME/Desktop/"$programname.desktop" ; chmod u+x $HOME/Desktop/"$programname.desktop" ; sudo cp -fv $HOME/Desktop/"$programname.desktop" /usr/share/applications/"$programname.desktop"
 
 }
 
@@ -249,15 +272,25 @@ repositorylist (){
 
     echo "Downloading The Ghost Team Script Collection (Repository)..."
 
-    curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection (Repository).ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20(Repository).ghost"
+    wget -L -O "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection (Repository).ghost" \
+"https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20(Repository).ghost"
+
+    #curl -L -o "$localinstalldirectory/Get Ghost Scripts/The Ghost Team Script Collection (Repository).ghost" "https://github.com/jcore92/The-Ghost-Team-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/The%20Ghost%20Team%20Script%20Collection%20(Repository).ghost"
 
     echo "Downloading JCore92 Script Collection (Repository)..."
 
-    curl -L -o "$localinstalldirectory/Get Ghost Scripts/JCore92 Script Collection (Repository).ghost" "https://github.com/jcore92/JCore92-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/JCore92%20Script%20Collection%20(Repository).ghost"
+    wget -L -O "$localinstalldirectory/Get Ghost Scripts/JCore92 Script Collection (Repository).ghost" \
+"https://github.com/jcore92/JCore92-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/JCore92%20Script%20Collection%20(Repository).ghost"
+
+    #curl -L -o "$localinstalldirectory/Get Ghost Scripts/JCore92 Script Collection (Repository).ghost" "https://github.com/jcore92/JCore92-Script-Collection/raw/refs/heads/main/Get%20Ghost%20Scripts/JCore92%20Script%20Collection%20(Repository).ghost"
 
 }
 
 refreshrepositories (){
+
+    echo "
+Refreshing repositories...
+" | center
 
     # Cleanup function: accepts a file path and removes it if it exists
     cleanup_old_file() {
@@ -283,7 +316,9 @@ refreshrepositories (){
 
     repositorylist
 
-    echo "Updating signatures..." | center
+    echo "
+Updating signatures...
+" | center
 
     signatureupdate-force
 
@@ -317,7 +352,8 @@ $libraryname not found in current directory...
     echo "$libraryname not found in $localtempdirectory, downloading...
     "
     sleep 1
-    curl -L -o $localinstalldirectory/$libraryname $remotelibrarylink
+    wget -L -O "$localinstalldirectory/$libraryname" "$remotelibrarylink"
+    #curl -L -o $localinstalldirectory/$libraryname $remotelibrarylink
 
     fi
     fi
@@ -401,13 +437,15 @@ Installation is complete. $programname will exit, please restart $programname wi
 
 uninstaller (){
 
-    sudo rm -rfv "/usr/local/bin/ghostAPT" "$localinstalldirectory" "$localtempdirectory" "$HOME/Desktop/$programname" "/usr/share/applications/$programname.desktop" "/usr/share/icons/ghostAPT"
+    sudo rm -rfv "/usr/local/bin/ghostAPT" "$localinstalldirectory" "$localtempdirectory" "$HOME/Desktop/$programname.desktop" "/usr/share/applications/$programname.desktop" "/usr/share/icons/ghostAPT"
 
     echo "
-    Uninstall has complete.
-    "
+Uninstall has complete.
+    " | center
 
     entertocontinue
+
+    exit
 
     hierarchy="0"
 
@@ -569,7 +607,11 @@ autoupdatechecker() {
     # ⚙️ Number of days after which to check for updates
     local UPDATE_INTERVAL_DAYS=5
 
-    local TMP_FILE="$localtempdirectory/update_timestamp.tmp"
+    local TMP_FILE="$localinstalldirectory/update_timestamp.tmp"
+
+    echo "
+Check for updates:
+" | center
 
     # Create the temporary directory if it doesn't exist
     mkdir -p "$localtempdirectory" &>/dev/null
@@ -591,14 +633,16 @@ autoupdatechecker() {
             DIFF=$(( (CURRENT_EPOCH - LAST_EPOCH) / 86400 ))
         else
             # Treat invalid date as expired (force update)
-            echo "Warning: Invalid or corrupted date in timestamp file. Forcing update check." | center
+            echo "Warning: Invalid or corrupted date in timestamp file. Forcing update check.
+" | center
             # Update the .tmp file with the current date
             echo "$CURRENT_DATE" > "$TMP_FILE"
             DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
         fi
     else
         # No previous timestamp — treat as expired (first run)
-        echo "No previous update timestamp found. Initializing..." | center
+        echo "No previous update timestamp found...
+" | center
         # Update the .tmp file with the current date
         echo "$CURRENT_DATE" > "$TMP_FILE"
         DIFF=$((UPDATE_INTERVAL_DAYS + 1))  # Force trigger
@@ -606,9 +650,7 @@ autoupdatechecker() {
 
     # Check if the required number of days has passed
     if [ "$DIFF" -ge "$UPDATE_INTERVAL_DAYS" ]; then
-        echo "Checking if $programname needs updates..." | center
         pullforupdates
-        echo "Refreshing repositories..." | center
         refreshrepositories
         # ✅ Reset the timestamp to today after update
         echo "$CURRENT_DATE" > "$TMP_FILE"
@@ -1131,7 +1173,8 @@ display_ghost_files() {
         local checktrust=$(sha256sum "$full_path" | cut -d ' ' -f1)
 
         # Launch editor
-        konsole -e "nano \"$full_path\""
+        x-terminal-emulator -e bash -c 'exec nano "$0"' "$full_path"
+        #konsole -e "nano \"$full_path\""
         local updatetrust=$(sha256sum "$full_path" | cut -d ' ' -f1)
 
         # Update signature if changed
@@ -1172,7 +1215,9 @@ display_ghost_files() {
           echo ""
           echo "Running $selection..." | center
           echo ""
-          konsole -e "bash \"$full_path\"" &
+          chmod +x "$full_path"
+          x-terminal-emulator -e bash -c "'$full_path'" &> /dev/null &
+          #konsole -e "bash \"$full_path\"" &
         fi
 
         divider
@@ -1298,7 +1343,8 @@ Selected $selected
 
         if [ "$selected" == "Install $programname" ]; then echo "Proceeding to install $programname..."
             installation #| center
-            konsole -e "$localinstalldirectory/ghostAPT.sh run" &
+            x-terminal-emulator -e "bash -c '$localinstalldirectory/ghostAPT.sh run'" &
+            #konsole -e "$localinstalldirectory/ghostAPT.sh run" &
             exit
             #hierarchy="1"
         fi

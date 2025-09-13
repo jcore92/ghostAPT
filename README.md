@@ -53,17 +53,17 @@ Make sure that ghostAPT.sh is executable. (If you don't know how to do this sear
 
 KDE:
         
-        Double click on ghostAPT.sh and execute it.
+    Double click on ghostAPT.sh and execute it.
 
 Gnome-based:
         
-        Right click ghostAPT.sh and Run as Program.
+    Right click ghostAPT.sh and Run as Program.
 
 Terminal:
 ensure that you are in the same directory as ghostAPT.sh.
 
 run this command:
 
-        bash ghostAPT.sh
+    bash ghostAPT.sh
 
 Follow the Installation Manager and enjoy!
